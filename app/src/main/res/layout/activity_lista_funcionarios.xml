@@ -33,13 +33,16 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/lista_funcionarios_insere_funcionario"
         android:layout_alignParentEnd="true"
-        android:layout_margin="26dp"
+        android:layout_margin="12dp"
+        android:layout_marginBottom="12dp"
         android:clickable="true"
         android:contentDescription="TODO"
         android:focusable="true"
         android:src="@drawable/ic_action_novo_funcionario"
-        tools:ignore="ContentDescription,HardcodedText,SpeakableTextPresentCheck"
-        tools:layout_editor_absoluteX="35dp"
-        tools:layout_editor_absoluteY="652dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.954"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="ContentDescription,HardcodedText,SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

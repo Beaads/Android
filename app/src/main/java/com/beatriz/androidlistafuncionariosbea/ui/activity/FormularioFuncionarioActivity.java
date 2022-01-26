@@ -17,6 +17,8 @@ import com.beatriz.androidlistafuncionariosbea.model.Funcionario;
 
 public class FormularioFuncionarioActivity extends AppCompatActivity {
 
+    private static final String TITULO_APPBAR_NOVO_FUNCIONARIO = "Novo funcionario";
+    private static final String TITULO_APPBAR_EDITA_FUNCIONARIO = "Edita funcionario";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

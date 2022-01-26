@@ -11,11 +11,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.beatriz.androidlistafuncionariosbea.R;
 import com.beatriz.androidlistafuncionariosbea.dao.FuncionarioDAO;
 import com.beatriz.androidlistafuncionariosbea.model.Funcionario;
 import com.beatriz.androidlistafuncionariosbea.ui.recyclerview.adapter.ListaFuncionariosAdapter;
+import com.beatriz.androidlistafuncionariosbea.ui.recyclerview.adapter.OnItemClickListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -23,6 +25,7 @@ import java.util.List;
 public class ListaFuncionariosActivity extends AppCompatActivity {
 
     private ListaFuncionariosAdapter adapter;
+    public static final String TITULO_APPBAR = "Lista de funcionarios";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +76,8 @@ public class ListaFuncionariosActivity extends AppCompatActivity {
     }
 
     private boolean ehResultadoComNota(int requestCode, int resultCode, Intent data) {
-        return ehCodigoRequisicaoInsereNota(requestCode) &&
-                ehCodigoResultadoNotaCriada(resultCode) &&
+        return ehCodigoRequisicaoInsereFuncionario(requestCode) &&
+                ehCodigoResultadoFuncionarioCriado(resultCode) &&
                 temNota(data);
     }
 
@@ -82,11 +85,11 @@ public class ListaFuncionariosActivity extends AppCompatActivity {
         return data.hasExtra(CHAVE_FUNCIONARIO);
     }
 
-    private boolean ehCodigoResultadoNotaCriada(int resultCode) {
+    private boolean ehCodigoResultadoFuncionarioCriado(int resultCode) {
         return resultCode == CODIGO_RESULTADO_FUNCIONARIO_CRIADO;
     }
 
-    private boolean ehCodigoRequisicaoInsereNota(int requestCode) {
+    private boolean ehCodigoRequisicaoInsereFuncionario(int requestCode) {
         return requestCode == CODIGO_REQUISICAO_INSERE_FUNCIONARIO;
     }
 
@@ -95,8 +98,23 @@ public class ListaFuncionariosActivity extends AppCompatActivity {
         configuraAdapter(todosFuncionarios, listaFuncionarios);
     }
 
-    private void configuraAdapter(List<Funcionario> todosFuncionarios, RecyclerView listaNotas) {
+    private void configuraAdapter(List<Funcionario> todosFuncionarios, RecyclerView listaFuncionarios) {
         adapter = new ListaFuncionariosAdapter(this, todosFuncionarios);
-        listaNotas.setAdapter(adapter);
+        listaFuncionarios.setAdapter(adapter);
+        adapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick() {
+                Toast.makeText(ListaFuncionariosActivity.this, "viewholder activity", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
+
+//
+//    private void abreFormularioModoEditaAluno(Funcionario funcionario) {
+//        Intent vaiParaFormularioActivity = new Intent(ListaFuncionariosActivity.this, FormularioFuncionarioActivity.class);
+//        vaiParaFormularioActivity.putExtra(CHAVE_FUNCIONARIO, funcionario);
+//        startActivity(vaiParaFormularioActivity);
+//    }
 }
+

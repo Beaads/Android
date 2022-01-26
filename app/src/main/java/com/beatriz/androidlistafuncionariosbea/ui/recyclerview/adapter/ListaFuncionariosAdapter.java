@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,10 +17,15 @@ import java.util.List;
 public class ListaFuncionariosAdapter extends RecyclerView.Adapter<ListaFuncionariosAdapter.FuncionarioViewHolder> {
     private final List<Funcionario> funcionarios;
     private final Context context;
+    private OnItemClickListener onItemClickListener;
 
     public ListaFuncionariosAdapter(Context context, List<Funcionario> funcionarios){
         this.context = context;
         this.funcionarios = funcionarios;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -51,6 +57,13 @@ public class ListaFuncionariosAdapter extends RecyclerView.Adapter<ListaFunciona
             nome = itemView.findViewById(R.id.item_funcionario_nome);
             setor = itemView.findViewById(R.id.item_funcionario_setor);
             email = itemView.findViewById(R.id.item_funcionario_email);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onItemClickListener.onItemClick();
+                }
+
+                });
         }
 
         public void vincula(Funcionario funcionario){
