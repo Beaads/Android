@@ -6,4 +6,40 @@
     android:layout_height="match_parent"
     tools:context=".ui.activity.ListaFuncionariosActivity">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/lista_notas_recyclerview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layoutManager="LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/lista_funcionarios_insere_funcionario"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/item_formulario"/>
+
+
+    <View android:id="@+id/lista_funcionarios_fundo_gradiente_inferior"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        android:background="@drawable/fundo_gradiente_insere_funcionario"
+        app:layout_constraintBottom_toTopOf="@id/lista_funcionarios_insere_funcionario"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/lista_funcionarios_insere_funcionario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/lista_funcionarios_insere_funcionario"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="26dp"
+        android:clickable="true"
+        android:contentDescription="TODO"
+        android:focusable="true"
+        android:src="@drawable/ic_action_novo_funcionario"
+        tools:ignore="ContentDescription,HardcodedText,SpeakableTextPresentCheck"
+        tools:layout_editor_absoluteX="35dp"
+        tools:layout_editor_absoluteY="652dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

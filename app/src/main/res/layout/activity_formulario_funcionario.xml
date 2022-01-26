@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.activity.FormularioFuncionarioActivity">
+
+    <EditText android:id="@+id/formulario_funcionario_nome"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:background="@android:color/transparent"
+        android:hint="Nome"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <EditText
+        android:id="@+id/formulario_funcionario_setor"
+        android:layout_width="382dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/transparent"
+        android:gravity="top"
+        android:hint="Setor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/formulario_funcionario_nome"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/formulario_funcionario_nome"
+        app:layout_constraintTop_toBottomOf="@id/formulario_funcionario_nome"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <EditText
+        android:id="@+id/formulario_funcionario_email"
+        android:layout_width="382dp"
+        android:layout_height="34dp"
+        android:layout_margin="0dp"
+        android:background="@android:color/transparent"
+        android:gravity="top"
+        android:hint="Email"
+        app:layout_constraintStart_toStartOf="@+id/formulario_funcionario_setor"
+        app:layout_constraintTop_toBottomOf="@id/formulario_funcionario_setor"
+        tools:layout_editor_absoluteY="94dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
