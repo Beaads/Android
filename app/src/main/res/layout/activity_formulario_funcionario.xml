@@ -6,44 +6,81 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.activity.FormularioFuncionarioActivity">
 
-    <EditText android:id="@+id/formulario_funcionario_nome"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+    <EditText
+        android:id="@+id/formulario_funcionario_nome"
+        android:layout_width="383dp"
+        android:layout_height="50dp"
         android:layout_margin="15dp"
+        android:gravity="top"
         android:background="@android:color/transparent"
         android:hint="Nome"
-        android:textSize="25sp"
-        android:textStyle="bold"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View android:id="@+id/lista_funcionarios_fundo_gradiente_inferior"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        android:background="@drawable/fundo_gradiente_insere_funcionario"
+        app:layout_constraintBottom_toTopOf="@id/formulario_funcionario_nome"
+        app:layout_constraintEnd_toEndOf="@id/formulario_funcionario_nome"
+        app:layout_constraintStart_toStartOf="@id/formulario_funcionario_nome"/>
 
     <EditText
         android:id="@+id/formulario_funcionario_setor"
-        android:layout_width="382dp"
-        android:layout_height="31dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="383dp"
+        android:layout_height="50dp"
         android:layout_marginBottom="8dp"
         android:background="@android:color/transparent"
         android:gravity="top"
         android:hint="Setor"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/formulario_funcionario_nome"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/formulario_funcionario_nome"
-        app:layout_constraintTop_toBottomOf="@id/formulario_funcionario_nome"
+        app:layout_constraintTop_toBottomOf="@+id/formulario_funcionario_nome"
         app:layout_constraintVertical_bias="0.0" />
+
+    <View android:id="@+id/lista_funcionarios_fundo_gradiente_inferior"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        android:background="@drawable/fundo_gradiente_insere_funcionario"
+        app:layout_constraintBottom_toTopOf="@id/formulario_funcionario_setor"
+        app:layout_constraintEnd_toEndOf="@id/formulario_funcionario_setor"
+        app:layout_constraintStart_toStartOf="@id/formulario_funcionario_setor"
+        tools:ignore="DuplicateIds" />
 
     <EditText
         android:id="@+id/formulario_funcionario_email"
-        android:layout_width="382dp"
-        android:layout_height="34dp"
+        android:layout_width="383dp"
+        android:layout_height="50dp"
         android:layout_margin="0dp"
+        android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
         android:gravity="top"
         android:hint="Email"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/formulario_funcionario_setor"
-        app:layout_constraintTop_toBottomOf="@id/formulario_funcionario_setor"
-        tools:layout_editor_absoluteY="94dp" />
+        app:layout_constraintTop_toBottomOf="@id/formulario_funcionario_setor" />
 
+    <View android:id="@+id/lista_funcionarios_fundo_gradiente_inferior"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        android:background="@drawable/fundo_gradiente_insere_funcionario"
+        app:layout_constraintBottom_toTopOf="@id/formulario_funcionario_email"
+        app:layout_constraintEnd_toEndOf="@id/formulario_funcionario_email"
+        app:layout_constraintStart_toStartOf="@id/formulario_funcionario_email"
+        tools:ignore="DuplicateIds" />
+
+    <View
+    android:id="@+id/lista_funcionarios_fundo_gradiente_inferior"
+    android:layout_width="0dp"
+    android:layout_height="5dp"
+    android:background="@drawable/fundo_gradiente_insere_funcionario"
+    app:layout_constraintStart_toStartOf="@id/formulario_funcionario_email"
+    app:layout_constraintEnd_toEndOf="@id/formulario_funcionario_email"
+    app:layout_constraintTop_toBottomOf="@id/formulario_funcionario_email"
+    tools:ignore="DuplicateIds" />
 </androidx.constraintlayout.widget.ConstraintLayout>

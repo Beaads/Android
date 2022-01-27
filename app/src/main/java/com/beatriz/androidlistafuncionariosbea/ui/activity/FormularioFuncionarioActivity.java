@@ -20,11 +20,14 @@ import java.io.Serializable;
 
 public class FormularioFuncionarioActivity extends AppCompatActivity {
 
+
+
     private int posicaoRecebida;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario_funcionario);
+        setTitle("Cadastrar Funcionario");
 
         Intent dadosRecebidos = getIntent();
         if (dadosRecebidos.hasExtra(CHAVE_FUNCIONARIO) && dadosRecebidos.hasExtra("posicao")) {
