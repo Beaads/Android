@@ -1,11 +1,11 @@
 package com.beatriz.androidlistafuncionariosbea.ui.recyclerview.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,27 +46,35 @@ public class ListaFuncionariosAdapter extends RecyclerView.Adapter<ListaFunciona
         return funcionarios.size();
     }
 
+    public void altera(int posicao, Funcionario funcionario) {
+        funcionarios.set(posicao, funcionario);
+        notifyDataSetChanged();
+    }
+
+    public void remove(int posicao) {
+        funcionarios.remove(posicao);
+        notifyDataSetChanged();
+    }
+
     class FuncionarioViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView nome;
         private final TextView setor;
         private final TextView email;
+        private Funcionario funcionario;
 
         public FuncionarioViewHolder(View itemView) {
             super(itemView);
             nome = itemView.findViewById(R.id.item_funcionario_nome);
             setor = itemView.findViewById(R.id.item_funcionario_setor);
             email = itemView.findViewById(R.id.item_funcionario_email);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onItemClickListener.onItemClick();
-                }
-
+            itemView.setOnClickListener((view) -> {
+                    onItemClickListener.onItemClick(funcionario, getAdapterPosition());
                 });
         }
 
         public void vincula(Funcionario funcionario){
+            this.funcionario = funcionario;
             preencheCampo(funcionario);
         }
 
@@ -77,6 +85,7 @@ public class ListaFuncionariosAdapter extends RecyclerView.Adapter<ListaFunciona
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void adiciona(Funcionario funcionario){
         funcionarios.add(funcionario);
         notifyDataSetChanged();

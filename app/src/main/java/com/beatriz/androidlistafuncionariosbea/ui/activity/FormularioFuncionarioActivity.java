@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,15 +16,29 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.beatriz.androidlistafuncionariosbea.R;
 import com.beatriz.androidlistafuncionariosbea.model.Funcionario;
 
+import java.io.Serializable;
+
 public class FormularioFuncionarioActivity extends AppCompatActivity {
 
-    private static final String TITULO_APPBAR_NOVO_FUNCIONARIO = "Novo funcionario";
-    private static final String TITULO_APPBAR_EDITA_FUNCIONARIO = "Edita funcionario";
-
+    private int posicaoRecebida;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario_funcionario);
+
+        Intent dadosRecebidos = getIntent();
+        if (dadosRecebidos.hasExtra(CHAVE_FUNCIONARIO) && dadosRecebidos.hasExtra("posicao")) {
+            Funcionario funcionarioRecebido = (Funcionario) dadosRecebidos.getSerializableExtra(CHAVE_FUNCIONARIO);
+            posicaoRecebida = dadosRecebidos.getIntExtra("posicao", -1);
+            TextView nome = findViewById(R.id.formulario_funcionario_nome);
+            nome.setText(funcionarioRecebido.getNome());
+
+            TextView setor = findViewById(R.id.formulario_funcionario_setor);
+            setor.setText(funcionarioRecebido.getSetor());
+
+            TextView email = findViewById(R.id.formulario_funcionario_email);
+            email.setText(funcionarioRecebido.getEmail());
+        }
     }
 
     @Override
@@ -42,11 +57,13 @@ public class FormularioFuncionarioActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void retornaFuncionario(Funcionario funcionario) {
+    private void retornaFuncionario (Funcionario funcionario) {
         Intent resultadoInsercao = new Intent();
         resultadoInsercao.putExtra(CHAVE_FUNCIONARIO, funcionario);
+        resultadoInsercao.putExtra("posicao", posicaoRecebida);
         setResult(CODIGO_RESULTADO_FUNCIONARIO_CRIADO,resultadoInsercao);
     }
+
 
     @NonNull
     private Funcionario criaFuncionario() {
@@ -57,7 +74,7 @@ public class FormularioFuncionarioActivity extends AppCompatActivity {
                 setor.getText().toString(), email.getText().toString());
     }
 
-    private boolean ehMenuSalvaFuncionario(MenuItem item) {
+    private boolean ehMenuSalvaFuncionario(@NonNull MenuItem item) {
         return item.getItemId() == R.id.menu_formulario_funcionario_ic_salva;
     }
 }

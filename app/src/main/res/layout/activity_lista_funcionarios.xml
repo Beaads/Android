@@ -39,10 +39,12 @@
         android:contentDescription="TODO"
         android:focusable="true"
         android:src="@drawable/ic_action_novo_funcionario"
+        app:backgroundTint="#3F51B5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.954"
         app:layout_constraintStart_toStartOf="parent"
+        app:rippleColor="@android:color/black"
         tools:ignore="ContentDescription,HardcodedText,SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
