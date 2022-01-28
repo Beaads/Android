@@ -124,10 +124,3 @@ public class ListaFuncionariosActivity extends AppCompatActivity {
     }
 }
 
-//
-//    private void abreFormularioModoEditaAluno(Funcionario funcionario) {
-//        Intent vaiParaFormularioActivity = new Intent(ListaFuncionariosActivity.this, FormularioFuncionarioActivity.class);
-//        vaiParaFormularioActivity.putExtra(CHAVE_FUNCIONARIO, funcionario);
-//        startActivity(vaiParaFormularioActivity);
-//    }
-

@@ -20,8 +20,6 @@ import java.io.Serializable;
 
 public class FormularioFuncionarioActivity extends AppCompatActivity {
 
-
-
     private int posicaoRecebida;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +64,6 @@ public class FormularioFuncionarioActivity extends AppCompatActivity {
         resultadoInsercao.putExtra("posicao", posicaoRecebida);
         setResult(CODIGO_RESULTADO_FUNCIONARIO_CRIADO,resultadoInsercao);
     }
-
 
     @NonNull
     private Funcionario criaFuncionario() {
