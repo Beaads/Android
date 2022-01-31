@@ -4,29 +4,27 @@ import static com.beatriz.androidlistafuncionariosbea.ui.activity.FuncionarioAct
 import static com.beatriz.androidlistafuncionariosbea.ui.activity.FuncionarioActivityConstantes.CODIGO_REQUISICAO_INSERE_FUNCIONARIO;
 import static com.beatriz.androidlistafuncionariosbea.ui.activity.FuncionarioActivityConstantes.CODIGO_RESULTADO_FUNCIONARIO_CRIADO;
 
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.beatriz.androidlistafuncionariosbea.R;
 import com.beatriz.androidlistafuncionariosbea.dao.FuncionarioDAO;
 import com.beatriz.androidlistafuncionariosbea.model.Funcionario;
+import com.beatriz.androidlistafuncionariosbea.retrofit.service.FuncionarioService;
 import com.beatriz.androidlistafuncionariosbea.ui.recyclerview.adapter.ListaFuncionariosAdapter;
 import com.beatriz.androidlistafuncionariosbea.ui.recyclerview.adapter.OnItemClickListener;
 import com.beatriz.androidlistafuncionariosbea.ui.recyclerview.helper.callback.FuncionarioItemTouchHelperCallback;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ListaFuncionariosActivity extends AppCompatActivity {
 

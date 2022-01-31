@@ -1,6 +1,7 @@
 package com.beatriz.androidlistafuncionariosbea.dao;
 
 import com.beatriz.androidlistafuncionariosbea.model.Funcionario;
+import com.beatriz.androidlistafuncionariosbea.retrofit.service.FuncionarioService;
 
 import java.util.ArrayList;
 import java.util.Arrays;

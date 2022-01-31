@@ -28,13 +28,35 @@
         app:layout_constraintStart_toStartOf="@id/formulario_funcionario_nome"/>
 
     <EditText
+        android:id="@+id/formulario_funcionario_idade"
+        android:layout_width="383dp"
+        android:layout_height="50dp"
+        android:layout_margin="0dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        android:gravity="top"
+        android:hint="Setor"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/formulario_funcionario_setor"
+        app:layout_constraintTop_toBottomOf="@id/formulario_funcionario_setor" />
+
+    <View android:id="@+id/lista_funcionarios_fundo_gradiente_inferior"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        android:background="@drawable/fundo_gradiente_insere_funcionario"
+        app:layout_constraintBottom_toTopOf="@id/formulario_funcionario_idade"
+        app:layout_constraintEnd_toEndOf="@id/formulario_funcionario_idade"
+        app:layout_constraintStart_toStartOf="@id/formulario_funcionario_idade"
+        tools:ignore="DuplicateIds" />
+
+    <EditText
         android:id="@+id/formulario_funcionario_setor"
         android:layout_width="383dp"
         android:layout_height="50dp"
         android:layout_marginBottom="8dp"
         android:background="@android:color/transparent"
         android:gravity="top"
-        android:hint="Setor"
+        android:hint="Idade"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/formulario_funcionario_nome"
@@ -42,6 +64,8 @@
         app:layout_constraintStart_toStartOf="@+id/formulario_funcionario_nome"
         app:layout_constraintTop_toBottomOf="@+id/formulario_funcionario_nome"
         app:layout_constraintVertical_bias="0.0" />
+
+
 
     <View android:id="@+id/lista_funcionarios_fundo_gradiente_inferior"
         android:layout_width="0dp"
@@ -52,35 +76,13 @@
         app:layout_constraintStart_toStartOf="@id/formulario_funcionario_setor"
         tools:ignore="DuplicateIds" />
 
-    <EditText
-        android:id="@+id/formulario_funcionario_email"
-        android:layout_width="383dp"
-        android:layout_height="50dp"
-        android:layout_margin="0dp"
-        android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
-        android:gravity="top"
-        android:hint="Email"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/formulario_funcionario_setor"
-        app:layout_constraintTop_toBottomOf="@id/formulario_funcionario_setor" />
-
-    <View android:id="@+id/lista_funcionarios_fundo_gradiente_inferior"
-        android:layout_width="0dp"
-        android:layout_height="5dp"
-        android:background="@drawable/fundo_gradiente_insere_funcionario"
-        app:layout_constraintBottom_toTopOf="@id/formulario_funcionario_email"
-        app:layout_constraintEnd_toEndOf="@id/formulario_funcionario_email"
-        app:layout_constraintStart_toStartOf="@id/formulario_funcionario_email"
-        tools:ignore="DuplicateIds" />
-
     <View
     android:id="@+id/lista_funcionarios_fundo_gradiente_inferior"
     android:layout_width="0dp"
     android:layout_height="5dp"
     android:background="@drawable/fundo_gradiente_insere_funcionario"
-    app:layout_constraintStart_toStartOf="@id/formulario_funcionario_email"
-    app:layout_constraintEnd_toEndOf="@id/formulario_funcionario_email"
-    app:layout_constraintTop_toBottomOf="@id/formulario_funcionario_email"
+    app:layout_constraintStart_toStartOf="@id/formulario_funcionario_idade"
+    app:layout_constraintEnd_toEndOf="@id/formulario_funcionario_idade"
+    app:layout_constraintTop_toBottomOf="@id/formulario_funcionario_idade"
     tools:ignore="DuplicateIds" />
 </androidx.constraintlayout.widget.ConstraintLayout>

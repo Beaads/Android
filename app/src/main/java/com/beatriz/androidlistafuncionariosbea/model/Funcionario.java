@@ -5,24 +5,25 @@ import java.io.Serializable;
 public class Funcionario implements Serializable {
 
         private final String nome;
+        private final String idade;
         private final String setor;
-        private final String email;
 
-    public Funcionario(String nome, String setor, String email) {
+
+    public Funcionario(String nome, String idade, String setor) {
         this.nome = nome;
+        this.idade = idade;
         this.setor = setor;
-        this.email = email;
     }
 
     public String getNome() {
         return nome;
     }
 
+    public String getIdade() {
+        return idade; }
+
     public String getSetor() {
         return setor;
-    }
 
-    public String getEmail() {
-        return email;
     }
 }

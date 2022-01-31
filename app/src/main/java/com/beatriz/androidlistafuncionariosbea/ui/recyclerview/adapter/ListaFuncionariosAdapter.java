@@ -59,15 +59,16 @@ public class ListaFuncionariosAdapter extends RecyclerView.Adapter<ListaFunciona
     class FuncionarioViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView nome;
+        private final TextView idade;
         private final TextView setor;
-        private final TextView email;
         private Funcionario funcionario;
 
         public FuncionarioViewHolder(View itemView) {
             super(itemView);
             nome = itemView.findViewById(R.id.item_funcionario_nome);
+            idade = itemView.findViewById(R.id.item_funcionario_idade);
             setor = itemView.findViewById(R.id.item_funcionario_setor);
-            email = itemView.findViewById(R.id.item_funcionario_email);
+
             itemView.setOnClickListener((view) -> {
                     onItemClickListener.onItemClick(funcionario, getAdapterPosition());
                 });
@@ -80,8 +81,8 @@ public class ListaFuncionariosAdapter extends RecyclerView.Adapter<ListaFunciona
 
         private void preencheCampo(Funcionario funcionario) {
             nome.setText(funcionario.getNome());
+            idade.setText(funcionario.getIdade());
             setor.setText(funcionario.getSetor());
-            email.setText(funcionario.getEmail());
         }
     }
 

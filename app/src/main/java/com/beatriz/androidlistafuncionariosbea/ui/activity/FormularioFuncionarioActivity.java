@@ -15,10 +15,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.beatriz.androidlistafuncionariosbea.R;
 import com.beatriz.androidlistafuncionariosbea.model.Funcionario;
+import com.beatriz.androidlistafuncionariosbea.retrofit.service.FuncionarioService;
 
+import java.io.IOException;
 import java.io.Serializable;
 
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class FormularioFuncionarioActivity extends AppCompatActivity {
+
+    Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl(FuncionarioService.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
 
     private int posicaoRecebida;
     @Override
@@ -37,8 +48,9 @@ public class FormularioFuncionarioActivity extends AppCompatActivity {
             TextView setor = findViewById(R.id.formulario_funcionario_setor);
             setor.setText(funcionarioRecebido.getSetor());
 
-            TextView email = findViewById(R.id.formulario_funcionario_email);
-            email.setText(funcionarioRecebido.getEmail());
+            TextView email = findViewById(R.id.formulario_funcionario_idade);
+            email.setText(funcionarioRecebido.getIdade());
+
         }
     }
 
@@ -53,6 +65,13 @@ public class FormularioFuncionarioActivity extends AppCompatActivity {
         if(ehMenuSalvaFuncionario(item)){
             Funcionario funcionarioCriado = criaFuncionario();
             retornaFuncionario(funcionarioCriado);
+            FuncionarioService service = retrofit.create(FuncionarioService.class);
+            Call<Funcionario> funcionarios = service.adiciona(funcionarioCriado);
+            try {
+                funcionarios.execute();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             finish();
         }
         return super.onOptionsItemSelected(item);
@@ -69,12 +88,14 @@ public class FormularioFuncionarioActivity extends AppCompatActivity {
     private Funcionario criaFuncionario() {
         EditText nome = findViewById(R.id.formulario_funcionario_nome);
         EditText setor = findViewById(R.id.formulario_funcionario_setor);
-        EditText email = findViewById(R.id.formulario_funcionario_email);
+        EditText idade = findViewById(R.id.formulario_funcionario_idade);
         return new Funcionario(nome.getText().toString(),
-                setor.getText().toString(), email.getText().toString());
+                setor.getText().toString(), idade.getText().toString());
+
     }
 
     private boolean ehMenuSalvaFuncionario(@NonNull MenuItem item) {
         return item.getItemId() == R.id.menu_formulario_funcionario_ic_salva;
+
     }
 }
