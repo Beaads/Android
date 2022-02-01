@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.beatriz.androidlistafuncionariosbea.R;
 import com.beatriz.androidlistafuncionariosbea.dao.FuncionarioDAO;
@@ -22,11 +23,22 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ListaFuncionariosActivity extends AppCompatActivity {
+
+    HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+    OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)).build();
+    Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl(FuncionarioService.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
 
     private ListaFuncionariosAdapter adapter;
 
@@ -38,7 +50,6 @@ public class ListaFuncionariosActivity extends AppCompatActivity {
         List<Funcionario> todosFuncionarios = pegaTodosFuncionarios();
         configuraRecyclerView(todosFuncionarios);
         configuraNovoFuncionario();
-
     }
 
     private static Retrofit getRetrofit() {
@@ -49,9 +60,25 @@ public class ListaFuncionariosActivity extends AppCompatActivity {
         return retrofit;
     }
 
-//    public static FuncionarioService getFuncionarios() {
-//        FuncionarioService funcionarioService = getRetrofit().create();
-//    }
+    public static void getFunc() {
+        FuncionarioService funcionarioService = getRetrofit().create(FuncionarioService.class);
+        Call<List<Funcionario>> func = funcionarioService.getFuncionarios();
+        func.enqueue(new Callback<List<Funcionario>>() {
+            @Override
+            public void onResponse(Call<List<Funcionario>> call, Response<List<Funcionario>> response) {
+            if (response.isSuccessful()) {
+                Log.i("sucess", response.body().toString());
+            }
+            }
+
+            @Override
+            public void onFailure(Call<List<Funcionario>> call, Throwable t) {
+                Log.i("erro", t.getLocalizedMessage());
+            }
+        });
+        func.request();
+    }
+
 
     private List<Funcionario> pegaTodosFuncionarios() {
         FuncionarioDAO dao = new FuncionarioDAO();
