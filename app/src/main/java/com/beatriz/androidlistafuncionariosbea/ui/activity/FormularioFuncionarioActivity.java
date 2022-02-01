@@ -36,7 +36,6 @@ public class FormularioFuncionarioActivity extends AppCompatActivity {
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(FuncionarioService.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
             .build();
 
     private int posicaoRecebida;
@@ -81,13 +80,13 @@ public class FormularioFuncionarioActivity extends AppCompatActivity {
                     if(response.isSuccessful()) {
                         Toast.makeText(FormularioFuncionarioActivity.this, "salvo com sucesso", Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(FormularioFuncionarioActivity.this, "deu pau", Toast.LENGTH_LONG).show();
+                        Toast.makeText(FormularioFuncionarioActivity.this, "erro", Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Funcionario> call, Throwable t) {
-                    Toast.makeText(FormularioFuncionarioActivity.this, "deu pau feião , se joga da ponte " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(FormularioFuncionarioActivity.this, "erro grande " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                 }
             });
 

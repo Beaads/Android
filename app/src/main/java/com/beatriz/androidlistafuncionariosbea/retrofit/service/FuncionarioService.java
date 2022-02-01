@@ -11,7 +11,7 @@ import retrofit2.http.POST;
 
 public interface FuncionarioService {
 
-    public static final String BASE_URL = "http://192.168.0.2:8080/";
+    public static final String BASE_URL = "http://192.168.0.11:8080/";
 
     @GET("funcionarios/")
    Call<List<Funcionario>> getFuncionarios();

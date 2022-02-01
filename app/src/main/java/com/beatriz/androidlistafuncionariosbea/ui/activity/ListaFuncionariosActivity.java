@@ -49,13 +49,13 @@ public class ListaFuncionariosActivity extends AppCompatActivity {
         return retrofit;
     }
 
-    public static FuncionarioService getFuncionarios() {
-        FuncionarioService funcionarioService = getRetrofit().create();
-    }
+//    public static FuncionarioService getFuncionarios() {
+//        FuncionarioService funcionarioService = getRetrofit().create();
+//    }
 
     private List<Funcionario> pegaTodosFuncionarios() {
-
-
+        FuncionarioDAO dao = new FuncionarioDAO();
+        return dao.todos();
     }
 
     private void configuraNovoFuncionario() {
