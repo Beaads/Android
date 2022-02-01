@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,15 +21,22 @@ import com.beatriz.androidlistafuncionariosbea.retrofit.service.FuncionarioServi
 import java.io.IOException;
 import java.io.Serializable;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FormularioFuncionarioActivity extends AppCompatActivity {
 
+    HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+    OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)).build();
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(FuncionarioService.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
             .build();
 
     private int posicaoRecebida;
@@ -67,11 +75,23 @@ public class FormularioFuncionarioActivity extends AppCompatActivity {
             retornaFuncionario(funcionarioCriado);
             FuncionarioService service = retrofit.create(FuncionarioService.class);
             Call<Funcionario> funcionarios = service.adiciona(funcionarioCriado);
-            try {
-                funcionarios.execute();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            funcionarios.enqueue(new Callback<Funcionario>() {
+                @Override
+                public void onResponse(Call<Funcionario> call, Response<Funcionario> response) {
+                    if(response.isSuccessful()) {
+                        Toast.makeText(FormularioFuncionarioActivity.this, "salvo com sucesso", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(FormularioFuncionarioActivity.this, "deu pau", Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Funcionario> call, Throwable t) {
+                    Toast.makeText(FormularioFuncionarioActivity.this, "deu pau feião , se joga da ponte " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+
+            funcionarios.request();
             finish();
         }
         return super.onOptionsItemSelected(item);

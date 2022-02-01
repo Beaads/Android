@@ -41,6 +41,23 @@ public class ListaFuncionariosActivity extends AppCompatActivity {
 
     }
 
+    private static Retrofit getRetrofit() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(FuncionarioService.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        return retrofit;
+    }
+
+    public static FuncionarioService getFuncionarios() {
+        FuncionarioService funcionarioService = getRetrofit().create();
+    }
+
+    private List<Funcionario> pegaTodosFuncionarios() {
+
+
+    }
+
     private void configuraNovoFuncionario() {
         FloatingActionButton botaoNovoAluno = findViewById(R.id.lista_funcionarios_insere_funcionario);
         botaoNovoAluno.setOnClickListener(view -> vaiParaFormularioFuncionarioActivity());
@@ -52,11 +69,6 @@ public class ListaFuncionariosActivity extends AppCompatActivity {
                 new Intent(ListaFuncionariosActivity.this,
                         FormularioFuncionarioActivity.class);
         startActivityIfNeeded(iniciaFormularioNota, CODIGO_REQUISICAO_INSERE_FUNCIONARIO);
-    }
-
-    private List<Funcionario> pegaTodosFuncionarios() {
-        FuncionarioDAO dao = new FuncionarioDAO();
-        return dao.todos();
     }
 
     @Override
