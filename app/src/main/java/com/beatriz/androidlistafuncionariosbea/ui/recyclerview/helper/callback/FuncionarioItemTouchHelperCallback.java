@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.beatriz.androidlistafuncionariosbea.dao.FuncionarioDAO;
 import com.beatriz.androidlistafuncionariosbea.ui.recyclerview.adapter.ListaFuncionariosAdapter;
 
 public class FuncionarioItemTouchHelperCallback extends ItemTouchHelper.Callback {
@@ -29,7 +28,7 @@ public class FuncionarioItemTouchHelperCallback extends ItemTouchHelper.Callback
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
         int posicaoDoFuncionarioDeslizado = viewHolder.getAdapterPosition();
-        new FuncionarioDAO().remove(posicaoDoFuncionarioDeslizado);
+        //new FuncionarioDAO().remove(posicaoDoFuncionarioDeslizado);
         adapter.remove(posicaoDoFuncionarioDeslizado);
 
     }

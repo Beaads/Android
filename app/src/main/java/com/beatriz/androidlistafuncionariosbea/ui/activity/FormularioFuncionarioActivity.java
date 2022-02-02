@@ -31,11 +31,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FormularioFuncionarioActivity extends AppCompatActivity {
 
+    public Funcionario funcionarioUpdate = new Funcionario();
+
     HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
     OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)).build();
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(FuncionarioService.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
             .build();
 
     private int posicaoRecebida;
@@ -43,22 +46,26 @@ public class FormularioFuncionarioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario_funcionario);
-        setTitle("Cadastrar Funcionario");
+
 
         Intent dadosRecebidos = getIntent();
+
         if (dadosRecebidos.hasExtra(CHAVE_FUNCIONARIO) && dadosRecebidos.hasExtra("posicao")) {
+            setTitle("Alterar Funcionario");
             Funcionario funcionarioRecebido = (Funcionario) dadosRecebidos.getSerializableExtra(CHAVE_FUNCIONARIO);
+            funcionarioUpdate = funcionarioRecebido;
             posicaoRecebida = dadosRecebidos.getIntExtra("posicao", -1);
             TextView nome = findViewById(R.id.formulario_funcionario_nome);
             nome.setText(funcionarioRecebido.getNome());
 
+            TextView idade = findViewById(R.id.formulario_funcionario_idade);
+            idade.setText(funcionarioRecebido.getIdade());
+
             TextView setor = findViewById(R.id.formulario_funcionario_setor);
             setor.setText(funcionarioRecebido.getSetor());
-
-            TextView email = findViewById(R.id.formulario_funcionario_idade);
-            email.setText(funcionarioRecebido.getIdade());
-
+            return;
         }
+        setTitle("Criar Funcionario");
     }
 
     @Override
@@ -69,6 +76,31 @@ public class FormularioFuncionarioActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (funcionarioUpdate.getId() >= 0) {
+            Funcionario funcionarioAlterado = criaFuncionario();
+            retornaFuncionario(funcionarioAlterado);
+            FuncionarioService service = retrofit.create(FuncionarioService.class);
+            Call<Funcionario> funcionarioAtt = service.atualizaFuncionario(funcionarioUpdate.getId(), funcionarioAlterado);
+            funcionarioAtt.enqueue(new Callback<Funcionario>() {
+                @Override
+                public void onResponse(Call<Funcionario> call, Response<Funcionario> response) {
+                    if(response.isSuccessful()) {
+                        Toast.makeText(FormularioFuncionarioActivity.this, "Alterado com sucesso!", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(FormularioFuncionarioActivity.this, "Erro ao alterar, tente novamente!", Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Funcionario> call, Throwable t) {
+                    Toast.makeText(FormularioFuncionarioActivity.this, "Ocorreu um erro, tente novamente mais tarde!" + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+            funcionarioAtt.request();
+            finish();
+            return super.onOptionsItemSelected(item);
+        }
+
         if(ehMenuSalvaFuncionario(item)){
             Funcionario funcionarioCriado = criaFuncionario();
             retornaFuncionario(funcionarioCriado);
@@ -106,10 +138,11 @@ public class FormularioFuncionarioActivity extends AppCompatActivity {
     @NonNull
     private Funcionario criaFuncionario() {
         EditText nome = findViewById(R.id.formulario_funcionario_nome);
-        EditText setor = findViewById(R.id.formulario_funcionario_setor);
         EditText idade = findViewById(R.id.formulario_funcionario_idade);
+        EditText setor = findViewById(R.id.formulario_funcionario_setor);
+
         return new Funcionario(nome.getText().toString(),
-                setor.getText().toString(), idade.getText().toString());
+                idade.getText().toString(), setor.getText().toString());
 
     }
 

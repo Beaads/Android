@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.beatriz.androidlistafuncionariosbea.R;
-import com.beatriz.androidlistafuncionariosbea.dao.FuncionarioDAO;
 import com.beatriz.androidlistafuncionariosbea.model.Funcionario;
 import com.beatriz.androidlistafuncionariosbea.retrofit.service.FuncionarioService;
 import com.beatriz.androidlistafuncionariosbea.ui.recyclerview.adapter.ListaFuncionariosAdapter;
@@ -33,42 +32,39 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ListaFuncionariosActivity extends AppCompatActivity {
 
-    HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-    OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)).build();
-    Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl(FuncionarioService.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-
     private ListaFuncionariosAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_funcionarios);
-
-        List<Funcionario> todosFuncionarios = pegaTodosFuncionarios();
-        configuraRecyclerView(todosFuncionarios);
-        configuraNovoFuncionario();
+        getTodosFuncionarios();
+        botaoNovoFuncionario();
     }
 
     private static Retrofit getRetrofit() {
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(FuncionarioService.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
                 .build();
         return retrofit;
     }
 
-    public static void getFunc() {
-        FuncionarioService funcionarioService = getRetrofit().create(FuncionarioService.class);
-        Call<List<Funcionario>> func = funcionarioService.getFuncionarios();
-        func.enqueue(new Callback<List<Funcionario>>() {
+    public void getTodosFuncionarios() {
+        Call<List<Funcionario>> funcionarioList = getRetrofit().create(FuncionarioService.class).getFuncionarios();
+        funcionarioList.enqueue(new Callback<List<Funcionario>>() {
             @Override
             public void onResponse(Call<List<Funcionario>> call, Response<List<Funcionario>> response) {
-            if (response.isSuccessful()) {
-                Log.i("sucess", response.body().toString());
-            }
+                if (response.isSuccessful()) {
+                    Log.e("Sucesso", String.valueOf(response.body()));
+
+                    configuraRecyclerView(response.body());
+                }
             }
 
             @Override
@@ -76,21 +72,15 @@ public class ListaFuncionariosActivity extends AppCompatActivity {
                 Log.i("erro", t.getLocalizedMessage());
             }
         });
-        func.request();
     }
 
-
-    private List<Funcionario> pegaTodosFuncionarios() {
-        FuncionarioDAO dao = new FuncionarioDAO();
-        return dao.todos();
+    // Botão Novo Funiconario - Cadastro de novo funcionario
+    private void botaoNovoFuncionario() {
+        FloatingActionButton botaoNovoFuncionario = findViewById(R.id.lista_funcionarios_insere_funcionario);
+        botaoNovoFuncionario.setOnClickListener(view -> vaiParaFormularioFuncionarioActivity());
     }
 
-    private void configuraNovoFuncionario() {
-        FloatingActionButton botaoNovoAluno = findViewById(R.id.lista_funcionarios_insere_funcionario);
-        botaoNovoAluno.setOnClickListener(view -> vaiParaFormularioFuncionarioActivity());
-    }
-
-
+    // Vai para formulário para cadastrar novo funcionário
     private void vaiParaFormularioFuncionarioActivity() {
         Intent iniciaFormularioNota =
                 new Intent(ListaFuncionariosActivity.this,
@@ -98,27 +88,24 @@ public class ListaFuncionariosActivity extends AppCompatActivity {
         startActivityIfNeeded(iniciaFormularioNota, CODIGO_REQUISICAO_INSERE_FUNCIONARIO);
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(ehResultadoComFuncionario(requestCode, resultCode, data)){
             Funcionario funcionarioRecebido = (Funcionario) data.getSerializableExtra(CHAVE_FUNCIONARIO);
-            adiciona(funcionarioRecebido);
+            //adiciona(funcionarioRecebido);
         }
 
         if(requestCode == 2 && resultCode == CODIGO_RESULTADO_FUNCIONARIO_CRIADO && temFuncionario(data) && data.hasExtra("posicao")) {
             Funcionario funcionarioRecebido = (Funcionario) data.getSerializableExtra(CHAVE_FUNCIONARIO);
             int posicaoRecebida = data.getIntExtra("posicao", -1);
-            new FuncionarioDAO().altera(posicaoRecebida, funcionarioRecebido);
+            //new FuncionarioDAO().altera(posicaoRecebida, funcionarioRecebido);
             adapter.altera(posicaoRecebida, funcionarioRecebido);
         }
 
     }
 
-    private void adiciona(Funcionario funcionario) {
-        new FuncionarioDAO().insere(funcionario);
-        adapter.adiciona(funcionario);
-    }
 
     private boolean ehResultadoComFuncionario(int requestCode, int resultCode, Intent data) {
         return ehCodigoRequisicaoInsereFuncionario(requestCode) &&
@@ -157,7 +144,7 @@ public class ListaFuncionariosActivity extends AppCompatActivity {
                 abreFormularioComFuncionario.putExtra("posicao", posicao);
                 startActivityIfNeeded(abreFormularioComFuncionario, 2);
             }
-            });
+        });
     }
 }
 

@@ -9,8 +9,17 @@ public class Funcionario implements Serializable {
         private String idade;
         private String setor;
 
+    public Funcionario() {
+
+    }
 
     public Funcionario(String nome, String idade, String setor) {
+        this.nome = nome;
+        this.idade = idade;
+        this.setor = setor;
+    }
+    public Funcionario(int id, String nome, String idade, String setor) {
+        this.id = id;
         this.nome = nome;
         this.idade = idade;
         this.setor = setor;
@@ -31,6 +40,8 @@ public class Funcionario implements Serializable {
     public void setSetor(String setor) {
         this.setor = setor;
     }
+
+    public int getId() { return id;}
 
     public String getNome() {
         return nome;
