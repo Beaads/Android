@@ -13,6 +13,7 @@ public class Funcionario implements Serializable {
 
     }
 
+
     public Funcionario(String nome, String idade, String setor) {
         this.nome = nome;
         this.idade = idade;

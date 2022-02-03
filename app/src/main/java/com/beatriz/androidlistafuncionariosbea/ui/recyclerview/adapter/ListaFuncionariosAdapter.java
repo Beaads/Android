@@ -2,6 +2,7 @@ package com.beatriz.androidlistafuncionariosbea.ui.recyclerview.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.beatriz.androidlistafuncionariosbea.R;
 import com.beatriz.androidlistafuncionariosbea.model.Funcionario;
+import com.beatriz.androidlistafuncionariosbea.retrofit.service.FuncionarioService;
+import com.beatriz.androidlistafuncionariosbea.ui.activity.ListaFuncionariosActivity;
 
 import java.util.List;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ListaFuncionariosAdapter extends RecyclerView.Adapter<ListaFuncionariosAdapter.FuncionarioViewHolder> {
     private final List<Funcionario> funcionarios;
@@ -52,9 +63,47 @@ public class ListaFuncionariosAdapter extends RecyclerView.Adapter<ListaFunciona
     }
 
     public void remove(int posicao) {
-        funcionarios.remove(posicao);
+        deletarFuncionario(funcionarios.get(posicao).getId(), posicao);
+        //funcionarios.remove(posicao);
         notifyDataSetChanged();
     }
+
+    private static Retrofit getRetrofit() {
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(FuncionarioService.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
+                .build();
+        return retrofit;
+    }
+
+    public void deletarFuncionario(int idFuncionario, int posicao) {
+        Call<Funcionario> funcionarioDell = getRetrofit().create(FuncionarioService.class).deletaFuncionario(idFuncionario);
+        funcionarioDell.enqueue(new Callback<Funcionario>() {
+
+
+            @Override
+            public void onResponse(Call<Funcionario> call, Response<Funcionario> response) {
+                if(response.isSuccessful()) {
+                    Log.e("Funcionario deletado", "sucesso");
+                    funcionarios.remove(posicao);
+                    notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Funcionario> call, Throwable t) {
+                Log.i("Erro ao deletar", t.getLocalizedMessage());
+            }
+
+        });
+
+    }
+
 
     class FuncionarioViewHolder extends RecyclerView.ViewHolder {
 

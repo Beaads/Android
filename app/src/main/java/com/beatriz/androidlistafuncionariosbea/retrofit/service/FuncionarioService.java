@@ -6,6 +6,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -24,4 +25,7 @@ public interface FuncionarioService {
 
     @PUT ("funcionarios/{id}")
     Call<Funcionario> atualizaFuncionario(@Path("id") int id, @Body Funcionario funcionario);
+
+    @DELETE ("funcionarios/{id}")
+    Call<Funcionario> deletaFuncionario(@Path("id") int id);
 }

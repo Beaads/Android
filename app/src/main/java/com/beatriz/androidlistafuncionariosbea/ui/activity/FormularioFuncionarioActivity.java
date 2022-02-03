@@ -76,7 +76,7 @@ public class FormularioFuncionarioActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (funcionarioUpdate.getId() >= 0) {
+        if (funcionarioUpdate.getNome() != null) {
             Funcionario funcionarioAlterado = criaFuncionario();
             retornaFuncionario(funcionarioAlterado);
             FuncionarioService service = retrofit.create(FuncionarioService.class);

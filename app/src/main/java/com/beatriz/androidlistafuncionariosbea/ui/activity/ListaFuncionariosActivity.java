@@ -20,6 +20,7 @@ import com.beatriz.androidlistafuncionariosbea.ui.recyclerview.adapter.OnItemCli
 import com.beatriz.androidlistafuncionariosbea.ui.recyclerview.helper.callback.FuncionarioItemTouchHelperCallback;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.IOException;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -42,6 +43,15 @@ public class ListaFuncionariosActivity extends AppCompatActivity {
         botaoNovoFuncionario();
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        setContentView(R.layout.activity_lista_funcionarios);
+        getTodosFuncionarios();
+        botaoNovoFuncionario();
+    }
+
+
     private static Retrofit getRetrofit() {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -62,17 +72,18 @@ public class ListaFuncionariosActivity extends AppCompatActivity {
             public void onResponse(Call<List<Funcionario>> call, Response<List<Funcionario>> response) {
                 if (response.isSuccessful()) {
                     Log.e("Sucesso", String.valueOf(response.body()));
-
                     configuraRecyclerView(response.body());
                 }
             }
-
             @Override
             public void onFailure(Call<List<Funcionario>> call, Throwable t) {
                 Log.i("erro", t.getLocalizedMessage());
             }
         });
     }
+
+
+
 
     // Botão Novo Funiconario - Cadastro de novo funcionario
     private void botaoNovoFuncionario() {
@@ -103,7 +114,6 @@ public class ListaFuncionariosActivity extends AppCompatActivity {
             //new FuncionarioDAO().altera(posicaoRecebida, funcionarioRecebido);
             adapter.altera(posicaoRecebida, funcionarioRecebido);
         }
-
     }
 
 
