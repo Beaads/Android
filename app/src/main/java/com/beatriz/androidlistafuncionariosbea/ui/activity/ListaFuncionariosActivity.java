@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.beatriz.androidlistafuncionariosbea.R;
 import com.beatriz.androidlistafuncionariosbea.model.Funcionario;
@@ -29,7 +30,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Observable;
+import rx.Observer;
+import rx.Scheduler;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 public class ListaFuncionariosActivity extends AppCompatActivity {
 
@@ -60,27 +68,51 @@ public class ListaFuncionariosActivity extends AppCompatActivity {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(FuncionarioService.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(okHttpClient)
                 .build();
         return retrofit;
     }
 
     public void getTodosFuncionarios() {
-        Call<List<Funcionario>> funcionarioList = getRetrofit().create(FuncionarioService.class).getFuncionarios();
-        funcionarioList.enqueue(new Callback<List<Funcionario>>() {
-            @Override
-            public void onResponse(Call<List<Funcionario>> call, Response<List<Funcionario>> response) {
-                if (response.isSuccessful()) {
-                    Log.e("Sucesso", String.valueOf(response.body()));
-                    configuraRecyclerView(response.body());
-                }
-            }
-            @Override
-            public void onFailure(Call<List<Funcionario>> call, Throwable t) {
-                Log.i("erro", t.getLocalizedMessage());
-            }
-        });
-    }
+        Observable<List<Funcionario>> observable = getRetrofit().create(FuncionarioService.class).getFuncionarios();
+        observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<Funcionario>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(ListaFuncionariosActivity.this, "Erro: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onNext(List<Funcionario> funcionarios) {
+                        Toast.makeText(ListaFuncionariosActivity.this, "Sucesso", Toast.LENGTH_SHORT).show();
+                        configuraRecyclerView(funcionarios);
+                    }
+                });
+}
+
+
+
+//        funcionarioList.enqueue(new Callback<List<Funcionario>>() {
+//            @Override
+//            public void onResponse(Call<List<Funcionario>> call, Response<List<Funcionario>> response) {
+//                if (response.isSuccessful()) {
+//                    Log.e("Sucesso", String.valueOf(response.body()));
+//                    configuraRecyclerView(response.body());
+//                }
+//            }
+//            @Override
+//            public void onFailure(Call<List<Funcionario>> call, Throwable t) {
+//                Log.i("erro", t.getLocalizedMessage());
+//            }
+//        });
 
 
 

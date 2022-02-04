@@ -7,12 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.beatriz.androidlistafuncionariosbea.R;
 import com.beatriz.androidlistafuncionariosbea.model.Funcionario;
 import com.beatriz.androidlistafuncionariosbea.retrofit.service.FuncionarioService;
+import com.beatriz.androidlistafuncionariosbea.ui.activity.FormularioFuncionarioActivity;
 import com.beatriz.androidlistafuncionariosbea.ui.activity.ListaFuncionariosActivity;
 
 import java.util.List;
@@ -89,6 +91,7 @@ public class ListaFuncionariosAdapter extends RecyclerView.Adapter<ListaFunciona
             @Override
             public void onResponse(Call<Funcionario> call, Response<Funcionario> response) {
                 if(response.isSuccessful()) {
+                   // Toast.makeText(ListaFuncionariosActivity.this, "salvo com sucesso", Toast.LENGTH_LONG).show();
                     Log.e("Funcionario deletado", "sucesso");
                     funcionarios.remove(posicao);
                     notifyDataSetChanged();
