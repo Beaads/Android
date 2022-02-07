@@ -16,16 +16,16 @@ import rx.Observable;
 
 public interface FuncionarioService {
 
-    public static final String BASE_URL = "http://192.168.0.11:8080/";
+    public static final String BASE_URL = "http://192.168.0.55:8080/";
 
     @GET("funcionarios/")
     Observable<List<Funcionario>> getFuncionarios();
 
     @POST ("funcionarios/")
-    Call<Funcionario> adiciona(@Body Funcionario funcionario);
+    Observable<Funcionario> adiciona(@Body Funcionario funcionario);
 
     @PUT ("funcionarios/{id}")
-    Call<Funcionario> atualizaFuncionario(@Path("id") int id, @Body Funcionario funcionario);
+    Observable<Funcionario> atualizaFuncionario(@Path("id") int id, @Body Funcionario funcionario);
 
     @DELETE ("funcionarios/{id}")
     Call<Funcionario> deletaFuncionario(@Path("id") int id);

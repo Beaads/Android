@@ -20,6 +20,7 @@ import com.beatriz.androidlistafuncionariosbea.retrofit.service.FuncionarioServi
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -27,19 +28,28 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class FormularioFuncionarioActivity extends AppCompatActivity {
 
     public Funcionario funcionarioUpdate = new Funcionario();
 
+    private static Retrofit getRetrofit() {
     HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
     OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)).build();
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(FuncionarioService.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
             .client(okHttpClient)
             .build();
+    return retrofit;
+    }
 
     private int posicaoRecebida;
     @Override
@@ -78,55 +88,60 @@ public class FormularioFuncionarioActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (funcionarioUpdate.getNome() != null) {
             Funcionario funcionarioAlterado = criaFuncionario();
-            //retornaFuncionario(funcionarioAlterado);
-            FuncionarioService service = retrofit.create(FuncionarioService.class);
-            Call<Funcionario> funcionarioAtt = service.atualizaFuncionario(funcionarioUpdate.getId(), funcionarioAlterado);
-            funcionarioAtt.enqueue(new Callback<Funcionario>() {
-                @Override
-                public void onResponse(Call<Funcionario> call, Response<Funcionario> response) {
-                    if(response.isSuccessful()) {
-                        Toast.makeText(FormularioFuncionarioActivity.this, "Alterado com sucesso!", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(FormularioFuncionarioActivity.this, "Erro ao alterar, tente novamente!", Toast.LENGTH_LONG).show();
-                    }
-                }
+            retornaFuncionario(funcionarioAlterado);
+            Observable<Funcionario> observable1 = (Observable<Funcionario>) getRetrofit().create(FuncionarioService.class).atualizaFuncionario(funcionarioUpdate.getId(), funcionarioAlterado);
+            observable1
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<Funcionario>() {
+                        @Override
+                        public void onCompleted() {
+                            finish();
+                        }
 
-                @Override
-                public void onFailure(Call<Funcionario> call, Throwable t) {
-                    Toast.makeText(FormularioFuncionarioActivity.this, "Ocorreu um erro, tente novamente mais tarde!" + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                }
-            });
-            funcionarioAtt.request();
-            //finish();
+                        @Override
+                        public void onError(Throwable e) {
+                            Toast.makeText(FormularioFuncionarioActivity.this, "Erro ao alterar " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onNext(Funcionario funcionario) {
+                            Toast.makeText(FormularioFuncionarioActivity.this, "Sucesso ao alterar", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
             return super.onOptionsItemSelected(item);
         }
 
         if(ehMenuSalvaFuncionario(item)){
             Funcionario funcionarioCriado = criaFuncionario();
-            //retornaFuncionario(funcionarioCriado);
-            FuncionarioService service = retrofit.create(FuncionarioService.class);
-            Call<Funcionario> funcionarios = service.adiciona(funcionarioCriado);
-            funcionarios.enqueue(new Callback<Funcionario>() {
-                @Override
-                public void onResponse(Call<Funcionario> call, Response<Funcionario> response) {
-                    if(response.isSuccessful()) {
-                        Toast.makeText(FormularioFuncionarioActivity.this, "salvo com sucesso", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(FormularioFuncionarioActivity.this, "erro", Toast.LENGTH_LONG).show();
-                    }
-                }
+            Observable<Funcionario> observable = (Observable<Funcionario>) getRetrofit().create(FuncionarioService.class).adiciona(funcionarioCriado);
+            observable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<Funcionario>() {
 
-                @Override
-                public void onFailure(Call<Funcionario> call, Throwable t) {
-                    Toast.makeText(FormularioFuncionarioActivity.this, "erro grande " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                }
-            });
 
-            funcionarios.request();
-            finish();
+                        @Override
+                        public void onCompleted() {
+                            finish();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Toast.makeText(FormularioFuncionarioActivity.this, "Erro ao adicionar " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onNext(Funcionario funcionario) {
+                            Toast.makeText(FormularioFuncionarioActivity.this, "Sucesso ao adicionar", Toast.LENGTH_SHORT).show();
+                        }
+
+                    });
         }
+
         return super.onOptionsItemSelected(item);
-    }
+    };
 
     private void retornaFuncionario (Funcionario funcionario) {
         Intent resultadoInsercao = new Intent();
