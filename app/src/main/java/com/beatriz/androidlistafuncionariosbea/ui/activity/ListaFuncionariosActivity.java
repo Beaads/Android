@@ -98,25 +98,6 @@ public class ListaFuncionariosActivity extends AppCompatActivity {
                 });
 }
 
-
-
-//        funcionarioList.enqueue(new Callback<List<Funcionario>>() {
-//            @Override
-//            public void onResponse(Call<List<Funcionario>> call, Response<List<Funcionario>> response) {
-//                if (response.isSuccessful()) {
-//                    Log.e("Sucesso", String.valueOf(response.body()));
-//                    configuraRecyclerView(response.body());
-//                }
-//            }
-//            @Override
-//            public void onFailure(Call<List<Funcionario>> call, Throwable t) {
-//                Log.i("erro", t.getLocalizedMessage());
-//            }
-//        });
-
-
-
-
     // Botão Novo Funiconario - Cadastro de novo funcionario
     private void botaoNovoFuncionario() {
         FloatingActionButton botaoNovoFuncionario = findViewById(R.id.lista_funcionarios_insere_funcionario);
@@ -147,7 +128,6 @@ public class ListaFuncionariosActivity extends AppCompatActivity {
             adapter.altera(posicaoRecebida, funcionarioRecebido);
         }
     }
-
 
     private boolean ehResultadoComFuncionario(int requestCode, int resultCode, Intent data) {
         return ehCodigoRequisicaoInsereFuncionario(requestCode) &&

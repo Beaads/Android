@@ -28,5 +28,5 @@ public interface FuncionarioService {
     Observable<Funcionario> atualizaFuncionario(@Path("id") int id, @Body Funcionario funcionario);
 
     @DELETE ("funcionarios/{id}")
-    Call<Funcionario> deletaFuncionario(@Path("id") int id);
+    Observable<Funcionario> deletaFuncionario(@Path("id") int id);
 }

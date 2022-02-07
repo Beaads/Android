@@ -11,7 +11,6 @@ public class FuncionarioItemTouchHelperCallback extends ItemTouchHelper.Callback
 
     public FuncionarioItemTouchHelperCallback(ListaFuncionariosAdapter adapter) {
         this.adapter = adapter;
-
     }
 
     private ListaFuncionariosAdapter adapter;

@@ -25,7 +25,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class ListaFuncionariosAdapter extends RecyclerView.Adapter<ListaFuncionariosAdapter.FuncionarioViewHolder> {
     private final List<Funcionario> funcionarios;
@@ -66,7 +71,6 @@ public class ListaFuncionariosAdapter extends RecyclerView.Adapter<ListaFunciona
 
     public void remove(int posicao) {
         deletarFuncionario(funcionarios.get(posicao).getId(), posicao);
-        //funcionarios.remove(posicao);
         notifyDataSetChanged();
     }
 
@@ -78,35 +82,35 @@ public class ListaFuncionariosAdapter extends RecyclerView.Adapter<ListaFunciona
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(FuncionarioService.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(okHttpClient)
                 .build();
         return retrofit;
     }
 
     public void deletarFuncionario(int idFuncionario, int posicao) {
-        Call<Funcionario> funcionarioDell = getRetrofit().create(FuncionarioService.class).deletaFuncionario(idFuncionario);
-        funcionarioDell.enqueue(new Callback<Funcionario>() {
+        Observable<Funcionario> observable2 = (Observable<Funcionario>) getRetrofit().create(FuncionarioService.class).deletaFuncionario(idFuncionario);
+        observable2
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Funcionario>() {
+                    @Override
+                    public void onCompleted() {
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.i("Erro ao deletar", e.getLocalizedMessage());
+                    }
 
-            @Override
-            public void onResponse(Call<Funcionario> call, Response<Funcionario> response) {
-                if(response.isSuccessful()) {
-                   // Toast.makeText(ListaFuncionariosActivity.this, "salvo com sucesso", Toast.LENGTH_LONG).show();
-                    Log.e("Funcionario deletado", "sucesso");
-                    funcionarios.remove(posicao);
-                    notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Funcionario> call, Throwable t) {
-                Log.i("Erro ao deletar", t.getLocalizedMessage());
-            }
-
+                    @Override
+                    public void onNext(Funcionario funcionario) {
+                        Log.e("Funcionario deletado", "sucesso");
+                        funcionarios.remove(posicao);
+                        notifyDataSetChanged();
+                    }
         });
-
     }
-
 
     class FuncionarioViewHolder extends RecyclerView.ViewHolder {
 
@@ -144,3 +148,4 @@ public class ListaFuncionariosAdapter extends RecyclerView.Adapter<ListaFunciona
         notifyDataSetChanged();
     }
 }
+
