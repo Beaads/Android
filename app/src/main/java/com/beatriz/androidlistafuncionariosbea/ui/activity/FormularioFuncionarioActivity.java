@@ -78,7 +78,7 @@ public class FormularioFuncionarioActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (funcionarioUpdate.getNome() != null) {
             Funcionario funcionarioAlterado = criaFuncionario();
-            retornaFuncionario(funcionarioAlterado);
+            //retornaFuncionario(funcionarioAlterado);
             FuncionarioService service = retrofit.create(FuncionarioService.class);
             Call<Funcionario> funcionarioAtt = service.atualizaFuncionario(funcionarioUpdate.getId(), funcionarioAlterado);
             funcionarioAtt.enqueue(new Callback<Funcionario>() {
@@ -97,13 +97,13 @@ public class FormularioFuncionarioActivity extends AppCompatActivity {
                 }
             });
             funcionarioAtt.request();
-            finish();
+            //finish();
             return super.onOptionsItemSelected(item);
         }
 
         if(ehMenuSalvaFuncionario(item)){
             Funcionario funcionarioCriado = criaFuncionario();
-            retornaFuncionario(funcionarioCriado);
+            //retornaFuncionario(funcionarioCriado);
             FuncionarioService service = retrofit.create(FuncionarioService.class);
             Call<Funcionario> funcionarios = service.adiciona(funcionarioCriado);
             funcionarios.enqueue(new Callback<Funcionario>() {
@@ -145,7 +145,7 @@ public class FormularioFuncionarioActivity extends AppCompatActivity {
                 idade.getText().toString(), setor.getText().toString());
 
     }
-
+    // cria botao check cria/altera funcionario
     private boolean ehMenuSalvaFuncionario(@NonNull MenuItem item) {
         return item.getItemId() == R.id.menu_formulario_funcionario_ic_salva;
 
