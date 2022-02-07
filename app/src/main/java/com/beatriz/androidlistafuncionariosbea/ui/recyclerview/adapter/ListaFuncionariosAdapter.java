@@ -64,11 +64,6 @@ public class ListaFuncionariosAdapter extends RecyclerView.Adapter<ListaFunciona
         return funcionarios.size();
     }
 
-    public void altera(int posicao, Funcionario funcionario) {
-        funcionarios.set(posicao, funcionario);
-        notifyDataSetChanged();
-    }
-
     public void remove(int posicao) {
         deletarFuncionario(funcionarios.get(posicao).getId(), posicao);
         notifyDataSetChanged();
@@ -140,12 +135,6 @@ public class ListaFuncionariosAdapter extends RecyclerView.Adapter<ListaFunciona
             idade.setText(funcionario.getIdade());
             setor.setText(funcionario.getSetor());
         }
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    public void adiciona(Funcionario funcionario){
-        funcionarios.add(funcionario);
-        notifyDataSetChanged();
     }
 }
 

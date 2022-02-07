@@ -59,7 +59,6 @@ public class ListaFuncionariosActivity extends AppCompatActivity {
         botaoNovoFuncionario();
     }
 
-
     private static Retrofit getRetrofit() {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -113,46 +112,34 @@ public class ListaFuncionariosActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(ehResultadoComFuncionario(requestCode, resultCode, data)){
-            Funcionario funcionarioRecebido = (Funcionario) data.getSerializableExtra(CHAVE_FUNCIONARIO);
-            //adiciona(funcionarioRecebido);
-        }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//       super.onActivityResult(requestCode, resultCode, data);
+//    }
 
-        if(requestCode == 2 && resultCode == CODIGO_RESULTADO_FUNCIONARIO_CRIADO && temFuncionario(data) && data.hasExtra("posicao")) {
-            Funcionario funcionarioRecebido = (Funcionario) data.getSerializableExtra(CHAVE_FUNCIONARIO);
-            int posicaoRecebida = data.getIntExtra("posicao", -1);
-            //new FuncionarioDAO().altera(posicaoRecebida, funcionarioRecebido);
-            adapter.altera(posicaoRecebida, funcionarioRecebido);
-        }
-    }
-
-    private boolean ehResultadoComFuncionario(int requestCode, int resultCode, Intent data) {
-        return ehCodigoRequisicaoInsereFuncionario(requestCode) &&
-                ehCodigoResultadoFuncionarioCriado(resultCode) &&
-                temFuncionario(data);
-    }
-
-    private boolean temFuncionario(Intent data) {
-        return data.hasExtra(CHAVE_FUNCIONARIO);
-    }
-
-    private boolean ehCodigoResultadoFuncionarioCriado(int resultCode) {
-        return resultCode == CODIGO_RESULTADO_FUNCIONARIO_CRIADO;
-    }
-
-    private boolean ehCodigoRequisicaoInsereFuncionario(int requestCode) {
-        return requestCode == CODIGO_REQUISICAO_INSERE_FUNCIONARIO;
-    }
+//    private boolean ehResultadoComFuncionario(int requestCode, int resultCode, Intent data) {
+//        return ehCodigoRequisicaoInsereFuncionario(requestCode) &&
+//                ehCodigoResultadoFuncionarioCriado(resultCode) &&
+//                temFuncionario(data);
+//    }
+//
+//    private boolean temFuncionario(Intent data) {
+//        return data.hasExtra(CHAVE_FUNCIONARIO);
+//    }
+//
+//    private boolean ehCodigoResultadoFuncionarioCriado(int resultCode) {
+//        return resultCode == CODIGO_RESULTADO_FUNCIONARIO_CRIADO;
+//    }
+//
+//    private boolean ehCodigoRequisicaoInsereFuncionario(int requestCode) {
+//        return requestCode == CODIGO_REQUISICAO_INSERE_FUNCIONARIO;
+//    }
 
     private void configuraRecyclerView(List<Funcionario> todosFuncionarios) {
         RecyclerView listaFuncionarios = findViewById(R.id.lista_notas_recyclerview);
         configuraAdapter(todosFuncionarios, listaFuncionarios);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new FuncionarioItemTouchHelperCallback(adapter));
         itemTouchHelper.attachToRecyclerView(listaFuncionarios);
-
     }
 
     private void configuraAdapter(List<Funcionario> todosFuncionarios, RecyclerView listaFuncionarios) {

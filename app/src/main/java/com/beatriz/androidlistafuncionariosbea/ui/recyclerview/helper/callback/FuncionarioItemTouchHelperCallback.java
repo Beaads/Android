@@ -9,11 +9,11 @@ import com.beatriz.androidlistafuncionariosbea.ui.recyclerview.adapter.ListaFunc
 
 public class FuncionarioItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
+    private ListaFuncionariosAdapter adapter;
+
     public FuncionarioItemTouchHelperCallback(ListaFuncionariosAdapter adapter) {
         this.adapter = adapter;
     }
-
-    private ListaFuncionariosAdapter adapter;
 
     @Override
     public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {

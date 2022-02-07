@@ -78,6 +78,7 @@ public class FormularioFuncionarioActivity extends AppCompatActivity {
         setTitle("Criar Funcionario");
     }
 
+    // botao check cria/altera funcionario (sem esse metodo o botao some)
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_formulario_funcionario_salva, menu);
@@ -120,8 +121,6 @@ public class FormularioFuncionarioActivity extends AppCompatActivity {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<Funcionario>() {
-
-
                         @Override
                         public void onCompleted() {
                             finish();
@@ -136,7 +135,6 @@ public class FormularioFuncionarioActivity extends AppCompatActivity {
                         public void onNext(Funcionario funcionario) {
                             Toast.makeText(FormularioFuncionarioActivity.this, "Sucesso ao adicionar", Toast.LENGTH_SHORT).show();
                         }
-
                     });
         }
 
@@ -160,9 +158,8 @@ public class FormularioFuncionarioActivity extends AppCompatActivity {
                 idade.getText().toString(), setor.getText().toString());
 
     }
-    // cria botao check cria/altera funcionario
+    // cria botao check cria/altera funcionario (funcionalidade do botao)
     private boolean ehMenuSalvaFuncionario(@NonNull MenuItem item) {
         return item.getItemId() == R.id.menu_formulario_funcionario_ic_salva;
-
     }
 }
