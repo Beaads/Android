@@ -111,30 +111,6 @@ public class ListaFuncionariosActivity extends AppCompatActivity {
         startActivityIfNeeded(iniciaFormularioNota, CODIGO_REQUISICAO_INSERE_FUNCIONARIO);
     }
 
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//       super.onActivityResult(requestCode, resultCode, data);
-//    }
-
-//    private boolean ehResultadoComFuncionario(int requestCode, int resultCode, Intent data) {
-//        return ehCodigoRequisicaoInsereFuncionario(requestCode) &&
-//                ehCodigoResultadoFuncionarioCriado(resultCode) &&
-//                temFuncionario(data);
-//    }
-//
-//    private boolean temFuncionario(Intent data) {
-//        return data.hasExtra(CHAVE_FUNCIONARIO);
-//    }
-//
-//    private boolean ehCodigoResultadoFuncionarioCriado(int resultCode) {
-//        return resultCode == CODIGO_RESULTADO_FUNCIONARIO_CRIADO;
-//    }
-//
-//    private boolean ehCodigoRequisicaoInsereFuncionario(int requestCode) {
-//        return requestCode == CODIGO_REQUISICAO_INSERE_FUNCIONARIO;
-//    }
-
     private void configuraRecyclerView(List<Funcionario> todosFuncionarios) {
         RecyclerView listaFuncionarios = findViewById(R.id.lista_notas_recyclerview);
         configuraAdapter(todosFuncionarios, listaFuncionarios);
