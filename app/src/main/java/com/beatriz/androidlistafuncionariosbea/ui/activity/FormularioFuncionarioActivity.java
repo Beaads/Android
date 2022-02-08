@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.beatriz.androidlistafuncionariosbea.R;
 import com.beatriz.androidlistafuncionariosbea.model.Funcionario;
+import com.beatriz.androidlistafuncionariosbea.retrofit.client.RestClient;
 import com.beatriz.androidlistafuncionariosbea.retrofit.service.FuncionarioService;
 
 import java.io.IOException;
@@ -38,18 +39,8 @@ import rx.schedulers.Schedulers;
 public class FormularioFuncionarioActivity extends AppCompatActivity {
 
     public Funcionario funcionarioUpdate = new Funcionario();
+    RestClient restClient = new RestClient();
 
-    private static Retrofit getRetrofit() {
-    HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-    OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)).build();
-    Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl(FuncionarioService.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-            .client(okHttpClient)
-            .build();
-    return retrofit;
-    }
 
     private int posicaoRecebida;
     @Override
@@ -90,7 +81,7 @@ public class FormularioFuncionarioActivity extends AppCompatActivity {
         if (funcionarioUpdate.getNome() != null) {
             Funcionario funcionarioAlterado = criaFuncionario();
             retornaFuncionario(funcionarioAlterado);
-            Observable<Funcionario> observable1 = (Observable<Funcionario>) getRetrofit().create(FuncionarioService.class).atualizaFuncionario(funcionarioUpdate.getId(), funcionarioAlterado);
+            Observable<Funcionario> observable1 = (Observable<Funcionario>) restClient.getRetrofit().create(FuncionarioService.class).atualizaFuncionario(funcionarioUpdate.getId(), funcionarioAlterado);
             observable1
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -116,7 +107,7 @@ public class FormularioFuncionarioActivity extends AppCompatActivity {
 
         if(ehMenuSalvaFuncionario(item)){
             Funcionario funcionarioCriado = criaFuncionario();
-            Observable<Funcionario> observable = (Observable<Funcionario>) getRetrofit().create(FuncionarioService.class).adiciona(funcionarioCriado);
+            Observable<Funcionario> observable = (Observable<Funcionario>) restClient.getRetrofit().create(FuncionarioService.class).adiciona(funcionarioCriado);
             observable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

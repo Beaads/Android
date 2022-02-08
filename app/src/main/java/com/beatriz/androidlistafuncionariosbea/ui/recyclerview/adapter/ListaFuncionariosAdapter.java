@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.beatriz.androidlistafuncionariosbea.R;
 import com.beatriz.androidlistafuncionariosbea.model.Funcionario;
+import com.beatriz.androidlistafuncionariosbea.retrofit.client.RestClient;
 import com.beatriz.androidlistafuncionariosbea.retrofit.service.FuncionarioService;
 import com.beatriz.androidlistafuncionariosbea.ui.activity.FormularioFuncionarioActivity;
 import com.beatriz.androidlistafuncionariosbea.ui.activity.ListaFuncionariosActivity;
@@ -36,6 +37,8 @@ public class ListaFuncionariosAdapter extends RecyclerView.Adapter<ListaFunciona
     private final List<Funcionario> funcionarios;
     private final Context context;
     private OnItemClickListener onItemClickListener;
+
+    RestClient restClient = new RestClient();
 
     public ListaFuncionariosAdapter(Context context, List<Funcionario> funcionarios){
         this.context = context;
@@ -69,22 +72,8 @@ public class ListaFuncionariosAdapter extends RecyclerView.Adapter<ListaFunciona
         notifyDataSetChanged();
     }
 
-    private static Retrofit getRetrofit() {
-        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(FuncionarioService.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .client(okHttpClient)
-                .build();
-        return retrofit;
-    }
-
     public void deletarFuncionario(int idFuncionario, int posicao) {
-        Observable<Funcionario> observable2 = (Observable<Funcionario>) getRetrofit().create(FuncionarioService.class).deletaFuncionario(idFuncionario);
+        Observable<Funcionario> observable2 = (Observable<Funcionario>) restClient.getRetrofit().create(FuncionarioService.class).deletaFuncionario(idFuncionario);
         observable2
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

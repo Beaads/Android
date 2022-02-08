@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.beatriz.androidlistafuncionariosbea.R;
 import com.beatriz.androidlistafuncionariosbea.model.Funcionario;
+import com.beatriz.androidlistafuncionariosbea.retrofit.client.RestClient;
 import com.beatriz.androidlistafuncionariosbea.retrofit.service.FuncionarioService;
 import com.beatriz.androidlistafuncionariosbea.ui.recyclerview.adapter.ListaFuncionariosAdapter;
 import com.beatriz.androidlistafuncionariosbea.ui.recyclerview.adapter.OnItemClickListener;
@@ -42,6 +43,7 @@ import rx.schedulers.Schedulers;
 public class ListaFuncionariosActivity extends AppCompatActivity {
 
     private ListaFuncionariosAdapter adapter;
+    RestClient restClient = new RestClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,22 +61,8 @@ public class ListaFuncionariosActivity extends AppCompatActivity {
         botaoNovoFuncionario();
     }
 
-    private static Retrofit getRetrofit() {
-        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(FuncionarioService.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .client(okHttpClient)
-                .build();
-        return retrofit;
-    }
-
     public void getTodosFuncionarios() {
-        Observable<List<Funcionario>> observable = getRetrofit().create(FuncionarioService.class).getFuncionarios();
+        Observable<List<Funcionario>> observable = restClient.getRetrofit().create(FuncionarioService.class).getFuncionarios();
         observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
